@@ -21,8 +21,14 @@ connectDb()
 app.use(express.json())
 app.use(cors())
 
-app.use("/",require("./routes/user"))
-app.use("/recipe",require("./routes/recipe"))
+// Basic health endpoint for hosting providers and monitoring
+app.get('/health', (req, res) => {
+    return res.status(200).json({ status: 'ok', timestamp: Date.now() })
+})
+
+// API routes
+app.use('/', require('./routes/user'))
+app.use('/recipe', require('./routes/recipe'))
 
 app.listen(PORT,(err)=>{
     console.log(`app is listening on port ${PORT}`)

@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "server.js"
+    }
+  ],
+  "env": {
+    "CONNECTION_STRING": "mongodb+srv://thatikantideepak934_db_user:deepak@cluster0.k4ewqe4.mongodb.net/foodrecipe",
+    "SECRET_KEY": "your_super_secret_jwt_key_here_change_in_production_12345",
+    "PORT": "4000"
+  }
+}

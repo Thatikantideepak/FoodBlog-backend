@@ -29,7 +29,14 @@ const PORT = process.env.PORT || 4000
 connectDb()
 
 app.use(express.json())
-app.use(cors())
+// Configure CORS with optional ALLOWED_ORIGIN for production
+const allowedOrigin = process.env.ALLOWED_ORIGIN || '*'
+app.use(cors({
+    origin: allowedOrigin,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}))
 
 // Basic health endpoint for hosting providers and monitoring
 app.get('/health', (req, res) => {

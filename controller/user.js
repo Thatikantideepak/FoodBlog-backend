@@ -15,8 +15,11 @@ const userSignUp = async (req, res) => {
     const newUser = await User.create({
         email, password: hashPwd
     })
-    let token = jwt.sign({ email, id: newUser._id }, process.env.SECRET_KEY)
-    return res.status(200).json({ token, user:newUser })
+    // Sign token with expiration
+    let token = jwt.sign({ email, id: newUser._id }, process.env.SECRET_KEY, { expiresIn: '7d' })
+    // Do not return password to client
+    const safeUser = { _id: newUser._id, email: newUser.email, createdAt: newUser.createdAt }
+    return res.status(200).json({ token, user: safeUser })
 
 }
 
@@ -27,8 +30,9 @@ const userLogin = async (req, res) => {
     }
     let user = await User.findOne({ email })
     if (user && await bcrypt.compare(password, user.password)) {
-        let token = jwt.sign({ email, id: user._id }, process.env.SECRET_KEY)
-        return res.status(200).json({ token, user })
+        let token = jwt.sign({ email, id: user._id }, process.env.SECRET_KEY, { expiresIn: '7d' })
+        const safeUser = { _id: user._id, email: user.email, createdAt: user.createdAt }
+        return res.status(200).json({ token, user: safeUser })
     }
     else {
         return res.status(400).json({ error: "Invaild credientials" })

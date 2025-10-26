@@ -1,7 +1,8 @@
 const express=require("express")
 const app=express()
 const dotenv=require("dotenv").config()
-const connectDb=require("./config/connectionDb")
+// Note: filename is `connectionDB.js` (capital DB). Use exact case for Linux hosts like Render.
+const connectDb = require("./config/connectionDB")
 const cors=require("cors")
 
 // Validate required environment variables
